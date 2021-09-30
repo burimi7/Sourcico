@@ -1,0 +1,111 @@
+<button class="btn btn-sm btn-primary" (click)="recipeService.IsAddingNewRecipe=true">New recipe</button>
+
+<table class="table table-sm table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Source</th>
+            <th>Nr. of ingredients</th>
+            <th>Ingredients</th>
+            <th>Instructions</th>
+            <th>Preparation time</th>
+            <th>
+                <!--View recipe-->
+            </th>
+            <th>
+                <!--Delete recipe-->
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let Recipe of recipeService.Recipes; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{Recipe.name}}</td>
+            <td>{{Recipe.source}}</td>
+            <td>{{Recipe.ingredients.length}}</td>
+            <td>
+                <label *ngFor="let IngrediendName of Recipe.ingredients.slice(0,3);let i=index">
+                    {{IngrediendName.name}}
+                    {{i<=Recipe.ingredients.slice(0,3).length-1?", ":""}}
+                    </label>{{Recipe.ingredients.length>3?'...':''}}
+            </td>
+            <td>
+                <!-- If length<50 then show it full, otherwise take only the first 50 charactes, don't cut word, and show '...' -->
+                {{
+                    Recipe.instructions.length<=50?Recipe.instructions:
+                    Recipe.instructions.slice(0, 50) + Recipe.instructions.slice(50, Recipe.instructions.length).split(' ')[0] + '...'
+                }}
+            </td>
+            <td>
+                {{Recipe.preparation_time.hours>0?Recipe.preparation_time.hours+' hours ':''}} <!--if hours>0 then show it, otherwise, don't-->
+                {{Recipe.preparation_time.minutes>0?Recipe.preparation_time.minutes:''}} minutes <!--if minutes>0 then show it, otherwise, don't-->
+            </td>
+            <td> <button class=" btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#showRecipeDetails"
+                        (click)="SelectedRecipe=Recipe">View</button>
+            </td>
+            <!--View recipe-->
+            <td> <button class="btn btn-danger btn-sm" (click)="deleteRecipe(Recipe,i)">Delete</button> </td>
+            <!--Delete recipe-->
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="showRecipeDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{SelectedRecipe.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <b>Name:</b><br />
+                        <label>{{SelectedRecipe.name}}</label><br /><br />
+
+                        <b>Source:</b><br />
+                        <label>{{SelectedRecipe.source}}</label><br /><br />
+
+                        <b>Ingredients:</b><br />
+                        <ol>
+                            <li *ngFor="let Ingredient of SelectedRecipe.ingredients">
+                                {{Ingredient.name}}({{Ingredient.quantity}})</li>
+                        </ol>
+
+                        <b>Preparation time:</b><br />
+                        {{SelectedRecipe.preparation_time.hours>0?SelectedRecipe.preparation_time.hours+' hours ':''}}
+                        <!--if hours>0 then show it, otherwise, don't-->
+                        {{SelectedRecipe.preparation_time.minutes>0?SelectedRecipe.preparation_time.minutes:''}} minutes
+                        <!--if minutes>0 then show it, otherwise, don't-->
+
+                        <br />
+
+                        
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <b>Instructions:</b><br />
+                        <label>{{SelectedRecipe.instructions}}</label>
+                    </div>
+                </div>
+</div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger button-left" data-bs-dismiss="modal"
+                            (click)="deleteRecipe(SelectedRecipe)">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

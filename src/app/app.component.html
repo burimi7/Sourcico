@@ -1,0 +1,17 @@
+<html>
+<body>
+
+  <!-- List recipe -->
+  <div class="recipe-div" *ngIf="!recipeService.IsAddingNewRecipe">
+    <recipe-list></recipe-list>
+  </div>
+
+  <!-- New recipe -->
+  <div class="recipe-div " *ngIf="recipeService.IsAddingNewRecipe">   
+    <div class="new-recipe">&nbsp;</div>
+    
+    <recipe-add class="recipe-add-component"></recipe-add>    
+
+  </div>
+</body>
+</html>

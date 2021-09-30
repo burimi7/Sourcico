@@ -1,0 +1,71 @@
+<div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">Name</div>
+        <div class="col-lg-8 col-sm-12">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="NewRecipe.name"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">Source</div>
+        <div class="col-lg-8 col-sm-12">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="NewRecipe.source" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">Ingredients</div>
+        <div class="col-lg-8 col-sm-12">
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-12">
+                    <label>Name</label><br/>
+                    <select class="form-control form-control-sm" [(ngModel)]="NewIngredient.name">
+                        <option *ngFor="let Ingredient of recipeService.Ingredients">{{Ingredient}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-5 col-sm-12">
+                    <label>Quantity</label><br/>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="NewIngredient.quantity" />
+                </div>
+                <div class="col-lg-2 col-sm-12" style="margin: auto;">
+                    <button class="btn btn-sm btn-primary" (click)="addIngredient()">+Add</button>
+                </div>
+            </div>
+
+            <span class="badge bg-primary" *ngFor="let IngredientInfo of NewRecipe.ingredients; let i = index">
+                {{IngredientInfo.name}} ({{IngredientInfo.quantity}})
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">
+                    X
+                </button>
+            </span>
+
+            <br/>
+
+            <label class="text-danger" *ngIf="NewRecipe.ingredients.length==0">The recipe must contain at least one ingredient.</label>
+
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">Preparation time</div>
+        <div class="col-lg-8 col-sm-12">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <label>Hours</label><br/>
+                    <input type="number" class="form-control form-control-sm" min="0" max="23" [(ngModel)]="NewRecipe.preparation_time.hours" />
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <label>Minutes</label><br/>
+                    <input type="number" class="form-control form-control-sm" min="0" max="59" [(ngModel)]="NewRecipe.preparation_time.minutes"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">Instructions</div>
+        <div class="col-lg-8 col-sm-12"><textarea rows="10" class="form-control form-control-sm" [(ngModel)]="NewRecipe.instructions"></textarea></div>
+    </div>
+    <br/>
+    <br/>
+<button class="btn btn-sm btn-primary w-50" [disabled]="NewRecipe.ingredients.length==0" (click)="addRecipe()">Add</button>
+<button class="btn btn-sm btn-light w-50" (click)="cancelRecipe()">Cancel</button>
